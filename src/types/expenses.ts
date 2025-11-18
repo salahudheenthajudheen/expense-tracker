@@ -4,6 +4,7 @@ export const EXPENSE_TAGS = [
   'Trip',
   'Travel',
   'Food',
+  'Food Ordering',
   'Shopping',
   'Bills',
   'Entertainment',

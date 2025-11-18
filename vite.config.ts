@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['vite.svg'],
       manifest: {
-        name: 'Expense Tracker INR',
-        short_name: 'ExpenseINR',
+        name: 'Expense Tracker',
+        short_name: 'Expense Tracker',
         description: 'Track your monthly expenses in Indian Rupees with real-time analytics',
         theme_color: '#4f46e5',
         background_color: '#f8fafc',

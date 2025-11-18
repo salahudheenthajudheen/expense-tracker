@@ -37,22 +37,22 @@ export const MonthlyInsights = ({ currentStats, previousStats }: MonthlyInsights
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 sm:p-6">
+      <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/50 dark:to-purple-950/50 p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Calendar className="h-5 w-5 text-indigo-600" />
-          <h3 className="text-base font-semibold text-slate-900 sm:text-lg">Monthly Performance</h3>
+          <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+          <h3 className="text-base font-semibold text-slate-900 dark:text-white sm:text-lg">Monthly Performance</h3>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {/* Balance */}
-          <div className="rounded-lg bg-white/80 p-3 sm:p-4">
+          <div className="rounded-lg bg-white/80 dark:bg-slate-800/80 p-3 sm:p-4">
             <div className="flex items-center gap-2 mb-1">
-              <Wallet className="h-4 w-4 text-slate-600" />
-              <p className="text-xs font-medium text-slate-600">Balance</p>
+              <Wallet className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Balance</p>
             </div>
-            <p className="text-lg font-bold text-slate-900 sm:text-xl">{formatCurrency(currentStats.balance)}</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white sm:text-xl">{formatCurrency(currentStats.balance)}</p>
             {balanceChange !== null && (
-              <div className={`flex items-center gap-1 mt-1 text-xs ${balanceChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <div className={`flex items-center gap-1 mt-1 text-xs ${balanceChange >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {balanceChange >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                 <span>{Math.abs(balanceChange).toFixed(1)}% vs last month</span>
               </div>
@@ -60,66 +60,66 @@ export const MonthlyInsights = ({ currentStats, previousStats }: MonthlyInsights
           </div>
 
           {/* Savings Rate */}
-          <div className="rounded-lg bg-white/80 p-3 sm:p-4">
+          <div className="rounded-lg bg-white/80 dark:bg-slate-800/80 p-3 sm:p-4">
             <div className="flex items-center gap-2 mb-1">
-              <PiggyBank className="h-4 w-4 text-slate-600" />
-              <p className="text-xs font-medium text-slate-600">Savings Rate</p>
+              <PiggyBank className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Savings Rate</p>
             </div>
-            <p className="text-lg font-bold text-slate-900 sm:text-xl">{savingsRate.toFixed(1)}%</p>
-            <p className="text-xs text-slate-500 mt-1">of income saved</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white sm:text-xl">{savingsRate.toFixed(1)}%</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">of income saved</p>
           </div>
 
           {/* Budget Usage */}
-          <div className="rounded-lg bg-white/80 p-3 sm:p-4">
+          <div className="rounded-lg bg-white/80 dark:bg-slate-800/80 p-3 sm:p-4">
             <div className="flex items-center gap-2 mb-1">
-              <DollarSign className="h-4 w-4 text-slate-600" />
-              <p className="text-xs font-medium text-slate-600">Budget Used</p>
+              <DollarSign className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Budget Used</p>
             </div>
-            <p className="text-lg font-bold text-slate-900 sm:text-xl">{budgetUtilization.toFixed(1)}%</p>
-            <p className="text-xs text-slate-500 mt-1">{formatCurrency(currentStats.budget - currentStats.expenses)} left</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white sm:text-xl">{budgetUtilization.toFixed(1)}%</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{formatCurrency(currentStats.budget - currentStats.expenses)} left</p>
           </div>
 
           {/* Avg Daily Expense */}
-          <div className="rounded-lg bg-white/80 p-3 sm:p-4">
+          <div className="rounded-lg bg-white/80 dark:bg-slate-800/80 p-3 sm:p-4">
             <div className="flex items-center gap-2 mb-1">
-              <Calendar className="h-4 w-4 text-slate-600" />
-              <p className="text-xs font-medium text-slate-600">Daily Avg</p>
+              <Calendar className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Daily Avg</p>
             </div>
-            <p className="text-lg font-bold text-slate-900 sm:text-xl">{formatCurrency(currentStats.avgDailyExpense)}</p>
-            <p className="text-xs text-slate-500 mt-1">{currentStats.transactionCount} transactions</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white sm:text-xl">{formatCurrency(currentStats.avgDailyExpense)}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{currentStats.transactionCount} transactions</p>
           </div>
         </div>
       </div>
 
       {/* Month Comparison */}
       {previousStats && (
-        <div className="rounded-xl bg-white p-4 shadow-sm sm:p-6">
-          <h4 className="text-sm font-semibold text-slate-900 mb-3 sm:text-base">vs Previous Month</h4>
+        <div className="rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm sm:p-6">
+          <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 sm:text-base">vs Previous Month</h4>
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs font-medium text-slate-600 mb-2">Income</p>
+            <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-3">
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">Income</p>
               <div className="flex items-baseline justify-between">
-                <p className="text-base font-semibold text-slate-900">{formatCurrency(currentStats.income)}</p>
+                <p className="text-base font-semibold text-slate-900 dark:text-white">{formatCurrency(currentStats.income)}</p>
                 {incomeChange !== null && (
-                  <span className={`text-xs font-medium ${incomeChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className={`text-xs font-medium ${incomeChange >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                     {incomeChange >= 0 ? '+' : ''}{incomeChange.toFixed(1)}%
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 mt-1">Previous: {formatCurrency(previousStats.income)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Previous: {formatCurrency(previousStats.income)}</p>
             </div>
 
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs font-medium text-slate-600 mb-2">Expenses</p>
+            <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-3">
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">Expenses</p>
               <div className="flex items-baseline justify-between">
-                <p className="text-base font-semibold text-slate-900">{formatCurrency(currentStats.expenses)}</p>
+                <p className="text-base font-semibold text-slate-900 dark:text-white">{formatCurrency(currentStats.expenses)}</p>
                 {expenseChange !== null && (
-                  <span className={`text-xs font-medium ${expenseChange <= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className={`text-xs font-medium ${expenseChange <= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                     {expenseChange >= 0 ? '+' : ''}{expenseChange.toFixed(1)}%
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 mt-1">Previous: {formatCurrency(previousStats.expenses)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Previous: {formatCurrency(previousStats.expenses)}</p>
             </div>
           </div>
         </div>

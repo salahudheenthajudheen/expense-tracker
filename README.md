@@ -9,6 +9,9 @@ Modern, mobile-first Progressive Web App for tracking income and expenses in Ind
 - 📊 **Real-time Analytics** - Pie chart breakdown by category
 - 🔍 **Smart Filtering** - Search and filter by category
 - 📈 **Budget Management** - Set monthly budgets and track spending
+- 📅 **Monthly Dashboard** - Navigate between months with detailed insights
+- 📉 **Performance Metrics** - Savings rate, budget usage, daily averages, trends
+- 🌓 **Auto Dark Mode** - Follows system preference automatically
 - 🎨 **Mobile-First Design** - Optimized for touch and small screens
 - 💾 **localStorage** - All data stored locally, no backend needed
 - 🇮🇳 **INR Currency** - All amounts in Indian Rupees (₹)
@@ -74,13 +77,14 @@ All data is stored in localStorage at key `expense_tracker_data`:
 
 **Expense Categories:**
 - 🚗 Fuel
-- 🍿 Snacks  
-- 🗺️ Trip
+- ☕ Snacks  
+- 📍 Trip
 - ✈️ Travel
-- 🍔 Food
+- 🍴 Food
+- 🛒 Food Ordering
 - 🛍️ Shopping
 - 📄 Bills
-- 🎬 Entertainment
+- 🎉 Entertainment
 - 📦 Others
 
 ## 📦 Tech Stack

@@ -89,10 +89,10 @@ function App() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-et-background p-4">
-        <div className="rounded-2xl bg-white p-6 text-center shadow">
-          <p className="text-lg font-semibold text-rose-600">Error loading data.</p>
-          <p className="text-sm text-slate-500">{error}</p>
+      <div className="flex min-h-screen items-center justify-center bg-et-background dark:bg-slate-900 p-4">
+        <div className="rounded-2xl bg-white dark:bg-slate-800 p-6 text-center shadow">
+          <p className="text-lg font-semibold text-rose-600 dark:text-rose-400">Error loading data.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">{error}</p>
         </div>
       </div>
     )
@@ -101,12 +101,11 @@ function App() {
   const shouldShowSetup = !summary || summary.targetBudget === 0
 
   return (
-    <div className="min-h-screen bg-et-background">
-      <header className="sticky top-0 z-10 bg-et-background/95 backdrop-blur-sm border-b border-slate-200 px-4 py-4 sm:py-6">
+    <div className="min-h-screen bg-et-background dark:bg-slate-900">
+      <header className="sticky top-0 z-10 bg-et-background/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-4 py-4 sm:py-6">
         <div className="mx-auto max-w-5xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500 sm:text-sm">ExpenseTrackerINR</p>
-          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl md:text-4xl mt-1">Stay on budget</h1>
-          <p className="text-sm text-slate-500 sm:text-base mt-1">Track expenses in Indian rupees</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl md:text-4xl">Stay on budget</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 sm:text-base mt-1">Track expenses seamlessly</p>
         </div>
       </header>
 

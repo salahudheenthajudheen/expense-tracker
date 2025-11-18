@@ -57,22 +57,22 @@ export const BudgetSetupCard = ({
   }
 
   return (
-    <div className="bg-et-card rounded-2xl shadow-lg p-5 w-full max-w-lg sm:p-6">
+    <div className="bg-et-card dark:bg-slate-800 rounded-2xl shadow-lg p-5 w-full max-w-lg sm:p-6">
       <div className="flex items-start gap-2.5 sm:gap-3">
-        <div className="rounded-xl bg-indigo-100 p-2.5 text-indigo-600 sm:rounded-2xl sm:p-3">
+        <div className="rounded-xl bg-indigo-100 dark:bg-indigo-900/30 p-2.5 text-indigo-600 dark:text-indigo-400 sm:rounded-2xl sm:p-3">
           <Wallet className="h-5 w-5 sm:h-6 sm:w-6" />
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between gap-3 sm:gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">{heading}</h2>
-              <p className="text-sm text-slate-500 sm:text-base">{helperText}</p>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white sm:text-xl">{heading}</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 sm:text-base">{helperText}</p>
             </div>
             {onClose && (
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:text-slate-700"
+                className="rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -83,9 +83,9 @@ export const BudgetSetupCard = ({
 
       <form onSubmit={handleSubmit} className="mt-5 space-y-3.5 sm:mt-6 sm:space-y-4">
         <label className="block">
-          <span className="text-xs font-medium text-slate-600 sm:text-sm">Monthly Budget</span>
-          <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 focus-within:border-indigo-500 sm:mt-2 sm:px-4 sm:py-3">
-            <span className="text-sm text-slate-400 sm:text-base">₹</span>
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 sm:text-sm">Monthly Budget</span>
+          <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 px-3 py-2.5 focus-within:border-indigo-500 dark:focus-within:border-indigo-400 sm:mt-2 sm:px-4 sm:py-3">
+            <span className="text-sm text-slate-400 dark:text-slate-500 sm:text-base">₹</span>
             <input
               type="number"
               inputMode="decimal"
@@ -94,16 +94,16 @@ export const BudgetSetupCard = ({
               onChange={(event) =>
                 setFormValues((prev) => ({ ...prev, targetBudget: event.target.value }))
               }
-              className="w-full bg-transparent text-base font-semibold text-slate-900 outline-none sm:text-lg"
+              className="w-full bg-transparent text-base font-semibold text-slate-900 dark:text-white outline-none sm:text-lg"
               placeholder="15,000"
             />
           </div>
         </label>
 
         <label className="block">
-          <span className="text-xs font-medium text-slate-600 sm:text-sm">Monthly Income</span>
-          <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 focus-within:border-indigo-500 sm:mt-2 sm:px-4 sm:py-3">
-            <span className="text-sm text-slate-400 sm:text-base">₹</span>
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 sm:text-sm">Monthly Income</span>
+          <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 px-3 py-2.5 focus-within:border-indigo-500 dark:focus-within:border-indigo-400 sm:mt-2 sm:px-4 sm:py-3">
+            <span className="text-sm text-slate-400 dark:text-slate-500 sm:text-base">₹</span>
             <input
               type="number"
               inputMode="decimal"
@@ -112,14 +112,14 @@ export const BudgetSetupCard = ({
               onChange={(event) =>
                 setFormValues((prev) => ({ ...prev, totalIncome: event.target.value }))
               }
-              className="w-full bg-transparent text-base font-semibold text-slate-900 outline-none sm:text-lg"
+              className="w-full bg-transparent text-base font-semibold text-slate-900 dark:text-white outline-none sm:text-lg"
               placeholder="25,000"
             />
           </div>
         </label>
 
         {initialValues && (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Current setup · Budget {formatCurrency(initialValues.targetBudget)} · Income{' '}
             {formatCurrency(initialValues.totalIncome)}
           </p>
@@ -130,7 +130,7 @@ export const BudgetSetupCard = ({
         <button
           type="submit"
           disabled={saving}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70 sm:text-base"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 dark:bg-indigo-500 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-500 dark:hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-70 sm:text-base"
         >
           {saving ? (
             <>
