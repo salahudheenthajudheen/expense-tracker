@@ -6,28 +6,19 @@ import { LoadingState } from './components/LoadingState'
 import { SummaryCards } from './components/SummaryCards'
 import { TransactionForm } from './components/TransactionForm'
 import { TransactionList } from './components/TransactionList'
-import { useAuthUser } from './hooks/useAuthUser'
-import { useExpensesData } from './hooks/useExpensesData'
 import { useLocalExpensesData } from './hooks/useLocalExpensesData'
 import { calculateBreakdown, calculateSpent, calculateIncome } from './utils/format'
 
-const USE_LOCAL_STORAGE = import.meta.env.VITE_USE_LOCAL_STORAGE === 'true'
-
 function App() {
-  const { user, loading: authLoading, error: authError } = useAuthUser()
-
-  const firebaseData = useExpensesData(USE_LOCAL_STORAGE ? null : user?.uid)
-  const localData = useLocalExpensesData()
-
   const {
     summary,
     transactions,
-    loading: dataLoading,
-    error: dataError,
+    loading,
+    error,
     saveSummary,
     addTransaction,
     deleteTransaction,
-  } = USE_LOCAL_STORAGE ? localData : firebaseData
+  } = useLocalExpensesData()
 
   const [isEditingBudget, setIsEditingBudget] = useState(false)
 
@@ -35,22 +26,22 @@ function App() {
   const totalIncome = useMemo(() => calculateIncome(transactions), [transactions])
   const breakdown = useMemo(() => calculateBreakdown(transactions), [transactions])
 
-  if (authLoading || (user && dataLoading)) {
+  if (loading) {
     return <LoadingState />
   }
 
-  if (authError) {
+  if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-et-background p-4">
         <div className="rounded-2xl bg-white p-6 text-center shadow">
-          <p className="text-lg font-semibold text-rose-600">Authentication failed.</p>
-          <p className="text-sm text-slate-500">{authError}</p>
+          <p className="text-lg font-semibold text-rose-600">Error loading data.</p>
+          <p className="text-sm text-slate-500">{error}</p>
         </div>
       </div>
     )
   }
 
-  const shouldShowSetup = !summary
+  const shouldShowSetup = !summary || summary.targetBudget === 0
 
   return (
     <div className="min-h-screen bg-et-background">
@@ -61,13 +52,6 @@ function App() {
           <p className="text-sm text-slate-500 sm:text-base mt-1">Track expenses in Indian rupees</p>
         </div>
       </header>
-
-      {dataError && (
-        <div className="mx-auto mt-6 flex max-w-5xl items-center gap-2 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
-          <AlertTriangle className="h-4 w-4" />
-          {dataError}
-        </div>
-      )}
 
       {shouldShowSetup ? (
         <div className="mx-auto flex max-w-3xl justify-center p-4">

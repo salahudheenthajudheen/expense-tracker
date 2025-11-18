@@ -1,6 +1,6 @@
 # ExpenseTrackerINR
 
-Modern, mobile-first expense tracker optimized for Android devices. Track income and expenses in Indian Rupees with real-time analytics and offline support.
+Modern, mobile-first Progressive Web App for tracking income and expenses in Indian Rupees. Works completely offline with localStorage.
 
 ## ✨ Features
 
@@ -10,7 +10,7 @@ Modern, mobile-first expense tracker optimized for Android devices. Track income
 - 🔍 **Smart Filtering** - Search and filter by category
 - 📈 **Budget Management** - Set monthly budgets and track spending
 - 🎨 **Mobile-First Design** - Optimized for touch and small screens
-- 💾 **Dual Data Mode** - Choose between Firebase or localStorage
+- 💾 **localStorage** - All data stored locally, no backend needed
 - 🇮🇳 **INR Currency** - All amounts in Indian Rupees (₹)
 
 ## 🚀 Quick Start
@@ -21,29 +21,13 @@ Modern, mobile-first expense tracker optimized for Android devices. Track income
 npm install
 ```
 
-2. **Configure data storage:**
-
-For **localStorage mode** (offline-first, no backend needed):
-```bash
-# Create .env.local
-echo "VITE_USE_LOCAL_STORAGE=true" > .env.local
-echo "VITE_APP_ID=ExpenseTrackerINR" >> .env.local
-```
-
-For **Firebase mode** (cloud sync):
-```bash
-# Copy template and add your Firebase credentials
-cp .env.example .env.local
-# Edit .env.local with your Firebase project settings
-```
-
-3. **Run the dev server:**
+2. **Run the dev server:**
 
 ```bash
 npm run dev
 ```
 
-4. **Build for production:**
+3. **Build for production:**
 
 ```bash
 npm run build
@@ -63,15 +47,15 @@ npm run preview  # Test production build
 3. App opens in its own window
 
 ### Offline Support:
-- Once installed, the app works completely offline in localStorage mode
-- All data is cached locally using service workers
-- Automatic updates when online
+- App works completely offline - no internet required
+- All data cached locally using service workers and localStorage
+- Install as PWA for native app experience
 
-## 📊 Data Models
+## 📊 Data Model
 
-### localStorage Mode
+All data is stored in localStorage at key `expense_tracker_data`:
+
 ```typescript
-// Stored at key: expense_tracker_data
 {
   budget: number,
   income: number,
@@ -85,23 +69,6 @@ npm run preview  # Test production build
   }>
 }
 ```
-
-### Firebase Mode
-- **Path**: `artifacts/{VITE_APP_ID}/users/{firebaseUserId}/expenses_data`
-- **Documents**:
-  - `summary`: `{ targetBudget: number, totalIncome: number }`
-  - `transaction_{timestamp}`: `{ amount: number, type: 'income'|'expense', tag: string, date: ISOString, description?: string }`
-
-Real-time sync with `onSnapshot` for instant updates across devices.
-
-## 🔐 Authentication
-
-### localStorage Mode
-No authentication required - data stored locally in browser.
-
-### Firebase Mode
-- Custom token auth: Set `window.__initial_auth_token` before app loads
-- Fallback: Anonymous Firebase Auth
 
 ## 🎨 Categories
 
@@ -124,7 +91,7 @@ No authentication required - data stored locally in browser.
 - **Charts:** Recharts
 - **Icons:** Lucide React
 - **PWA:** vite-plugin-pwa
-- **Backend:** Firebase (optional) or localStorage
+- **Storage:** localStorage (browser-based)
 
 ## 🛠️ Available Scripts
 
