@@ -56,3 +56,53 @@ export const getProgressColor = (summary: ExpenseSummary | null, spent: number) 
   if (ratio >= 0.75) return 'bg-amber-400'
   return 'bg-emerald-500'
 }
+
+// Monthly utilities
+export const getMonthKey = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+export const filterTransactionsByMonth = (
+  transactions: ExpenseTransaction[],
+  monthKey: string
+): ExpenseTransaction[] => {
+  return transactions.filter((txn) => {
+    const txnDate = new Date(txn.date)
+    return getMonthKey(txnDate) === monthKey
+  })
+}
+
+export const calculateMonthlyStats = (
+  transactions: ExpenseTransaction[],
+  monthKey: string,
+  budget: number,
+  income: number
+) => {
+  const monthTransactions = filterTransactionsByMonth(transactions, monthKey)
+  const expenses = calculateSpent(monthTransactions)
+  const monthIncome = calculateIncome(monthTransactions)
+  const balance = (income || monthIncome) - expenses
+
+  const daysInMonth = new Date(
+    parseInt(monthKey.split('-')[0]),
+    parseInt(monthKey.split('-')[1]),
+    0
+  ).getDate()
+
+  const avgDailyExpense = expenses / daysInMonth
+
+  const [year, month] = monthKey.split('-')
+
+  return {
+    month: new Date(parseInt(year), parseInt(month) - 1).toLocaleDateString('en-IN', { month: 'long' }),
+    year: parseInt(year),
+    budget,
+    income: income || monthIncome,
+    expenses,
+    balance,
+    transactionCount: monthTransactions.length,
+    avgDailyExpense,
+  }
+}

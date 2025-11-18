@@ -19,6 +19,14 @@ export interface ExpenseSummary {
   totalIncome: number
 }
 
+export interface MonthlyBudget {
+  month: string // Format: 'YYYY-MM'
+  budget: number
+  income: number
+  targetBudget: number // Alias for budget
+  totalIncome: number // Alias for income
+}
+
 export interface ExpenseTransaction {
   id: string
   type: TransactionType

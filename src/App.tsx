@@ -2,16 +2,27 @@ import { useMemo, useState } from 'react'
 import { BudgetSetupCard } from './components/BudgetSetupCard'
 import { CategoryBreakdown } from './components/CategoryBreakdown'
 import { LoadingState } from './components/LoadingState'
+import { MonthSelector } from './components/MonthSelector'
+import { MonthlyInsights } from './components/MonthlyInsights'
 import { SummaryCards } from './components/SummaryCards'
 import { TransactionForm } from './components/TransactionForm'
 import { TransactionList } from './components/TransactionList'
 import { useLocalExpensesData } from './hooks/useLocalExpensesData'
-import { calculateBreakdown, calculateSpent, calculateIncome } from './utils/format'
+import { 
+  calculateBreakdown, 
+  calculateSpent, 
+  calculateIncome,
+  getMonthKey,
+  filterTransactionsByMonth,
+  calculateMonthlyStats
+} from './utils/format'
 
 function App() {
   const {
     summary,
     transactions,
+    getMonthlyBudget,
+    saveMonthlyBudget,
     loading,
     error,
     saveSummary,
@@ -20,10 +31,57 @@ function App() {
   } = useLocalExpensesData()
 
   const [isEditingBudget, setIsEditingBudget] = useState(false)
+  const [selectedMonth, setSelectedMonth] = useState(new Date())
 
-  const totalSpent = useMemo(() => calculateSpent(transactions), [transactions])
-  const totalIncome = useMemo(() => calculateIncome(transactions), [transactions])
-  const breakdown = useMemo(() => calculateBreakdown(transactions), [transactions])
+  const currentMonthKey = useMemo(() => getMonthKey(selectedMonth), [selectedMonth])
+  const monthTransactions = useMemo(
+    () => filterTransactionsByMonth(transactions, currentMonthKey),
+    [transactions, currentMonthKey]
+  )
+
+  const monthlyBudget = useMemo(() => {
+    const stored = getMonthlyBudget(currentMonthKey)
+    return stored || summary
+  }, [currentMonthKey, getMonthlyBudget, summary])
+
+  const totalSpent = useMemo(() => calculateSpent(monthTransactions), [monthTransactions])
+  const totalIncome = useMemo(() => calculateIncome(monthTransactions), [monthTransactions])
+  const breakdown = useMemo(() => calculateBreakdown(monthTransactions), [monthTransactions])
+
+  // Current month stats
+  const currentStats = useMemo(() => {
+    return calculateMonthlyStats(
+      transactions,
+      currentMonthKey,
+      monthlyBudget?.targetBudget || 0,
+      monthlyBudget?.totalIncome || 0
+    )
+  }, [transactions, currentMonthKey, monthlyBudget])
+
+  // Previous month stats
+  const previousMonthKey = useMemo(() => {
+    const prevDate = new Date(selectedMonth)
+    prevDate.setMonth(prevDate.getMonth() - 1)
+    return getMonthKey(prevDate)
+  }, [selectedMonth])
+
+  const previousStats = useMemo(() => {
+    const prevBudget = getMonthlyBudget(previousMonthKey)
+    if (!prevBudget && !summary) return null
+    
+    return calculateMonthlyStats(
+      transactions,
+      previousMonthKey,
+      prevBudget?.targetBudget || summary?.targetBudget || 0,
+      prevBudget?.totalIncome || summary?.totalIncome || 0
+    )
+  }, [transactions, previousMonthKey, getMonthlyBudget, summary])
+
+  const handleBudgetUpdate = async (values: { targetBudget: number; totalIncome: number }) => {
+    await saveMonthlyBudget(currentMonthKey, values.targetBudget, values.totalIncome)
+    await saveSummary(values)
+    setIsEditingBudget(false)
+  }
 
   if (loading) {
     return <LoadingState />
@@ -54,12 +112,21 @@ function App() {
 
       {shouldShowSetup ? (
         <div className="mx-auto flex max-w-3xl justify-center p-4">
-          <BudgetSetupCard onSubmit={saveSummary} />
+          <BudgetSetupCard onSubmit={handleBudgetUpdate} />
         </div>
       ) : (
         <main className="mx-auto flex max-w-5xl flex-col gap-4 p-4 pb-24 sm:gap-6">
-          {summary && (
-            <SummaryCards summary={summary} spent={totalSpent} income={totalIncome} onEditBudget={() => setIsEditingBudget(true)} />
+          <MonthSelector currentMonth={selectedMonth} onMonthChange={setSelectedMonth} />
+          
+          <MonthlyInsights currentStats={currentStats} previousStats={previousStats} />
+
+          {monthlyBudget && (
+            <SummaryCards 
+              summary={monthlyBudget} 
+              spent={totalSpent} 
+              income={totalIncome} 
+              onEditBudget={() => setIsEditingBudget(true)} 
+            />
           )}
 
           <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -67,18 +134,18 @@ function App() {
             <CategoryBreakdown data={breakdown} total={totalSpent} />
           </div>
 
-          <TransactionList transactions={transactions} onDelete={deleteTransaction} />
+          <TransactionList transactions={monthTransactions} onDelete={deleteTransaction} />
         </main>
       )}
 
-      {isEditingBudget && summary && (
+      {isEditingBudget && monthlyBudget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
           <BudgetSetupCard
-            initialValues={summary}
-            onSubmit={saveSummary}
+            initialValues={monthlyBudget}
+            onSubmit={handleBudgetUpdate}
             onClose={() => setIsEditingBudget(false)}
-            heading="Update your monthly plan"
-            helperText="Tweak the budget or income whenever things change."
+            heading="Update this month's budget"
+            helperText="Set budget and income for the selected month."
           />
         </div>
       )}
