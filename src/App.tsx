@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { AlertTriangle } from 'lucide-react'
 import { BudgetSetupCard } from './components/BudgetSetupCard'
 import { CategoryBreakdown } from './components/CategoryBreakdown'
 import { LoadingState } from './components/LoadingState'
