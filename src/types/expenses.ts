@@ -37,7 +37,7 @@ export interface ExpenseTransaction {
   tag: ExpenseTag
 }
 
-export interface TransactionPayload extends Omit<ExpenseTransaction, 'id'> {}
+export interface TransactionPayload extends Omit<ExpenseTransaction, 'id'> { }
 
 export interface CategorySlice {
   tag: ExpenseTag
@@ -64,4 +64,12 @@ export interface FilterState {
   dateTo?: string
   category?: ExpenseTag | 'all'
   search?: string
+}
+
+export interface SavingsGoal {
+  id: string
+  name: string
+  targetAmount: number
+  currentAmount: number
+  color?: string
 }

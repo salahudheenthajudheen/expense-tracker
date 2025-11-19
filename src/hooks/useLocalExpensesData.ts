@@ -5,6 +5,7 @@ import type {
   ExpenseTransaction,
   TransactionFormValues,
   MonthlyBudget,
+  SavingsGoal,
 } from '../types/expenses'
 
 const STORAGE_KEY = 'expenseTrackerData'
@@ -13,6 +14,7 @@ interface StorageData {
   summary: ExpenseSummary | null
   transactions: ExpenseTransaction[]
   monthlyBudgets: MonthlyBudget[]
+  savingsGoals: SavingsGoal[]
 }
 
 const getStoredData = (): StorageData => {
@@ -24,12 +26,13 @@ const getStoredData = (): StorageData => {
         summary: data.summary || null,
         transactions: data.transactions || [],
         monthlyBudgets: data.monthlyBudgets || [],
+        savingsGoals: data.savingsGoals || [],
       }
     }
   } catch (err) {
     console.error('Failed to load from localStorage', err)
   }
-  return { summary: null, transactions: [], monthlyBudgets: [] }
+  return { summary: null, transactions: [], monthlyBudgets: [], savingsGoals: [] }
 }
 
 const setStoredData = (data: StorageData) => {
@@ -44,6 +47,7 @@ export const useLocalExpensesData = () => {
   const [summary, setSummary] = useState<ExpenseSummary | null>(null)
   const [transactions, setTransactions] = useState<ExpenseTransaction[]>([])
   const [monthlyBudgets, setMonthlyBudgets] = useState<MonthlyBudget[]>([])
+  const [savingsGoals, setSavingsGoals] = useState<SavingsGoal[]>([])
   const [loading, setLoading] = useState(true)
   const [error] = useState<string | null>(null)
 
@@ -54,6 +58,7 @@ export const useLocalExpensesData = () => {
       data.transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
     )
     setMonthlyBudgets(data.monthlyBudgets)
+    setSavingsGoals(data.savingsGoals)
     setLoading(false)
   }, [])
 
@@ -67,7 +72,7 @@ export const useLocalExpensesData = () => {
   const saveMonthlyBudget = useCallback(async (monthKey: string, budget: number, income: number) => {
     const data = getStoredData()
     const existingIndex = data.monthlyBudgets.findIndex(mb => mb.month === monthKey)
-    
+
     const monthlyBudget: MonthlyBudget = {
       month: monthKey,
       budget,
@@ -75,13 +80,13 @@ export const useLocalExpensesData = () => {
       targetBudget: budget, // Alias
       totalIncome: income, // Alias
     }
-    
+
     if (existingIndex >= 0) {
       data.monthlyBudgets[existingIndex] = monthlyBudget
     } else {
       data.monthlyBudgets.push(monthlyBudget)
     }
-    
+
     setStoredData(data)
     setMonthlyBudgets([...data.monthlyBudgets])
   }, [])
@@ -115,16 +120,49 @@ export const useLocalExpensesData = () => {
     setTransactions([...data.transactions])
   }, [])
 
-  return { 
-    summary, 
-    transactions, 
+  const addSavingsGoal = useCallback(async (goal: Omit<SavingsGoal, 'id' | 'currentAmount'>) => {
+    const data = getStoredData()
+    const newGoal: SavingsGoal = {
+      id: `goal_${Date.now()}`,
+      ...goal,
+      currentAmount: 0,
+    }
+    data.savingsGoals.push(newGoal)
+    setStoredData(data)
+    setSavingsGoals([...data.savingsGoals])
+  }, [])
+
+  const updateSavingsGoal = useCallback(async (id: string, amountToAdd: number) => {
+    const data = getStoredData()
+    const goalIndex = data.savingsGoals.findIndex(g => g.id === id)
+    if (goalIndex >= 0) {
+      data.savingsGoals[goalIndex].currentAmount += amountToAdd
+      setStoredData(data)
+      setSavingsGoals([...data.savingsGoals])
+    }
+  }, [])
+
+  const deleteSavingsGoal = useCallback(async (id: string) => {
+    const data = getStoredData()
+    data.savingsGoals = data.savingsGoals.filter(g => g.id !== id)
+    setStoredData(data)
+    setSavingsGoals([...data.savingsGoals])
+  }, [])
+
+  return {
+    summary,
+    transactions,
     monthlyBudgets,
-    loading, 
-    error, 
-    saveSummary, 
+    savingsGoals,
+    loading,
+    error,
+    saveSummary,
     saveMonthlyBudget,
     getMonthlyBudget,
-    addTransaction, 
-    deleteTransaction 
+    addTransaction,
+    deleteTransaction,
+    addSavingsGoal,
+    updateSavingsGoal,
+    deleteSavingsGoal
   }
 }
