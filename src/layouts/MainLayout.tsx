@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Receipt, PiggyBank } from 'lucide-react'
+import { LayoutDashboard, Receipt, PiggyBank, User } from 'lucide-react'
 import { clsx } from 'clsx'
 
 interface MainLayoutProps {
@@ -52,8 +52,8 @@ export function MainLayout({ children }: MainLayoutProps) {
       {/* Mobile Header */}
       <div className="md:hidden sticky top-0 z-40 flex h-16 items-center justify-between bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4">
         <h1 className="text-lg font-bold text-slate-900 dark:text-white">Expense Tracker</h1>
-        <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium text-sm">
-          AR
+        <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <User className="h-5 w-5" />
         </div>
       </div>
 
