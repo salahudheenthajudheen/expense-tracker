@@ -51,11 +51,14 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       {/* Mobile Header */}
       <div className="md:hidden sticky top-0 z-40 flex h-16 items-center justify-between bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4">
-        <h1 className="text-lg font-bold text-slate-900 dark:text-white">ExpenseTracker</h1>
+        <h1 className="text-lg font-bold text-slate-900 dark:text-white">Expense Tracker</h1>
+        <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium text-sm">
+          AR
+        </div>
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 md:pl-64 pb-20 md:pb-0">
+      <main className="flex-1 md:pl-64 pb-24 md:pb-0">
         <div className="mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
           {children}
         </div>
@@ -63,7 +66,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       {/* Mobile Bottom Nav */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 pb-safe">
-        <nav className="flex justify-around">
+        <nav className="flex justify-around items-center h-16">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href
             return (
@@ -72,13 +75,13 @@ export function MainLayout({ children }: MainLayoutProps) {
                 to={item.href}
                 className={clsx(
                   isActive
-                    ? 'text-slate-900 dark:text-white'
+                    ? 'text-indigo-600 dark:text-indigo-400'
                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white',
-                  'flex flex-col items-center py-3 px-2 text-xs font-medium transition-colors'
+                  'flex flex-col items-center justify-center w-full h-full transition-colors'
                 )}
               >
-                <item.icon className="mb-1 h-6 w-6" />
-                {item.name}
+                <item.icon className={clsx("h-6 w-6 mb-1", isActive && "fill-current opacity-20")} />
+                <span className="text-[10px] font-medium">{item.name}</span>
               </Link>
             )
           })}
